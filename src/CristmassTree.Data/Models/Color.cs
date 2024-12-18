@@ -1,6 +1,6 @@
 namespace CristmassTree.Data.Models;
 
-public static class Color
+public class Color
 {
     public static readonly string BlueLt = "blue-lt";
     public static readonly string BlueDk = "blue-dk";
