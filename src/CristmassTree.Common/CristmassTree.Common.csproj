@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <CodeAnalysisRuleSet>../../ChristmasTree.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>../ChristmasTree.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     
     <ItemGroup>

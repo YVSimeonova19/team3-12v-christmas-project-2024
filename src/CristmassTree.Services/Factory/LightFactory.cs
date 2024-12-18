@@ -1,17 +1,14 @@
-﻿using CristmassTree.Services.Contracts;
-using CristmassTree.Data.Models;
-using CristmassTree.Services.Validator;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CristmassTree.Data.Models;
+using CristmassTree.Services.Contracts;
+using CristmassTree.Services.Validator;
 
 namespace CristmassTree.Services
 {
     public class LightFactory : ILightFactory
     {
-        private static readonly Random Random = new();
-        private readonly LightValidator _lightValidator;
-
         private static readonly List<string> Colors = new()
         {
             "blue-lt",
@@ -28,15 +25,18 @@ namespace CristmassTree.Services
             "g3",
         };
 
+        private static readonly Random Random = new();
+        private readonly LightValidator lightValidator;
+
         public LightFactory(LightValidator lightValidator)
         {
-            _lightValidator = lightValidator;
+            this.lightValidator = lightValidator;
         }
 
         public async Task<Light> CreateLight(string description, string ct)
         {
-            double x = Random.NextDouble() * (125.80 - 0.00) + 0.00;
-            double y = Random.NextDouble() * (170.30 - 14.90) + 14.90;
+            double x = (Random.NextDouble() * (125.80 - 0.00)) + 0.00;
+            double y = (Random.NextDouble() * (170.30 - 14.90)) + 14.90;
             double radius = 3 + (Random.NextDouble() * (6 - 3));
 
             var color = Colors[Random.Next(Colors.Count)];
@@ -53,12 +53,12 @@ namespace CristmassTree.Services
                 CT = ct,
             };
 
-            if (await _lightValidator.ValidateLightAsync(light))
+            if (await this.lightValidator.ValidateLightAsync(light))
             {
                 return light;
             }
 
-            return await CreateLight(description, ct);
+            return await this.CreateLight(description, ct);
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using CristmassTree.Services.Contracts;
-using CristmassTree.Data.Models;
+﻿namespace CristmassTree.Services.Validator;
 
-namespace CristmassTree.Services.Validator;
+using CristmassTree.Data.Models;
+using CristmassTree.Services.Contracts;
 
 public class LightValidator : ILightValidator
 {

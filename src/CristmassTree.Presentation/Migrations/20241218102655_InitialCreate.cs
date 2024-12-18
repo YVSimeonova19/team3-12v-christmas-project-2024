@@ -22,7 +22,7 @@ namespace CristmassTree.Presentation.Migrations
                     Color = table.Column<string>(type: "TEXT", nullable: false),
                     Effect = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CT = table.Column<string>(type: "TEXT", nullable: false)
+                    CT = table.Column<string>(type: "TEXT", nullable: false),
                 },
                 constraints: table =>
                 {

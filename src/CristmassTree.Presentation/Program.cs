@@ -19,7 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "_corsPolicy",
+    options.AddPolicy(
+        name: "_corsPolicy",
         policy =>
         {
             policy.WithOrigins(

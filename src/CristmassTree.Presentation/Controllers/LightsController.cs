@@ -1,6 +1,7 @@
+using System.Diagnostics;
+using CristmassTree.Data.Models;
 using CristmassTree.Presentation.Models;
 using CristmassTree.Services;
-using CristmassTree.Data.Models;
 using CristmassTree.Services.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,49 +13,52 @@ namespace CristmassTree.Presentation.Controllers
     [ApiController]
     public class LightsController : ControllerBase
     {
-        LightFactory _lightFactory;
-        LightValidator _validator;
-        ILogger _logger;
+        private LightFactory lightFactory;
+        private LightValidator validator;
+        private ILogger logger;
 
         public LightsController(
-            LightFactory lightFactory, 
+            LightFactory lightFactory,
             LightValidator validator,
             ILogger<LightsController> logger)
         {
-            _lightFactory = lightFactory;
-            _validator = validator;
-            _logger = logger;
+            this.lightFactory = lightFactory;
+            this.validator = validator;
+            this.logger = logger;
         }
 
-        // GET 
+        // GET
         [HttpGet]
         public string Get()
         {
-            return JsonSerializer.Serialize("");
+            return JsonSerializer.Serialize(string.Empty);
         }
 
-
-        // POST 
+        // POST
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] LightPostViewModel model)
         {
             Console.WriteLine("here");
-            if (!Request.Headers.TryGetValue("Christmas-Token", out var ct))
+            if (!this.Request.Headers.TryGetValue("Christmas-Token", out var ct))
             {
-                _logger.LogError("No christmas token provided");
-                return BadRequest();
+                this.logger.LogError("No christmas token provided");
+                return this.BadRequest();
             }
 
-            var light = await _lightFactory.CreateLight(model.desc, ct);
-            if (await _validator.ValidateLightAsync(light))
+            if (model.desc != null)
             {
-                //_lights.Add(light);
-                _logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
-                return Ok();
+                // suppressed stylecop error ct possible null
+                var light = await this.lightFactory.CreateLight(model.desc, ct!);
+                if (await this.validator.ValidateLightAsync(light))
+                {
+                    //_lights.Add(light);
+                    this.logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
+                    return this.Ok();
+                }
             }
-            _logger.LogError("Error adding light");
-            return BadRequest();
+
+            this.logger.LogError("Error adding light");
+            return this.BadRequest();
         }
-
     }
 }
