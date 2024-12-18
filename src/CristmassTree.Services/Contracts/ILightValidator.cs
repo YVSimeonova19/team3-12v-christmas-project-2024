@@ -2,7 +2,8 @@
 
 namespace CristmassTree.Services.Contracts;
 
-public interface ILightValidator
+public partial interface ILightValidator
 {
     Task<bool> ValidateLightAsync(Light light);
+    ILightValidator SetNext(ILightValidator validator);
 }

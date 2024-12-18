@@ -9,6 +9,9 @@ namespace CristmassTree.Services
 {
     public class LightFactory : ILightFactory
     {
+        private static readonly Random Random = new();
+        private readonly ILightValidator validationChain;
+
         private static readonly List<string> Colors = new()
         {
             "blue-lt",
@@ -25,12 +28,12 @@ namespace CristmassTree.Services
             "g3",
         };
 
-        private static readonly Random Random = new();
-        private readonly LightValidator lightValidator;
-
-        public LightFactory(LightValidator lightValidator)
+        public LightFactory()
         {
-            this.lightValidator = lightValidator;
+            this.validationChain = new TrianglePositionValidator();
+            this.validationChain.SetNext(new ColorValidator())
+                            .SetNext(new EffectValidator())
+                            .SetNext(new ExternalApiValidator());
         }
 
         public async Task<Light> CreateLight(string description, string ct)
@@ -53,7 +56,7 @@ namespace CristmassTree.Services
                 CT = ct,
             };
 
-            if (await this.lightValidator.ValidateLightAsync(light))
+            if (await this.validationChain.ValidateLightAsync(light))
             {
                 return light;
             }

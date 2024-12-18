@@ -7,8 +7,12 @@
         <Rule Id="CS8034" Action="None" />
         <Rule Id="SA0001" Action="None" />
         <Rule Id="SA1005" Action="None" />
-        <Rule Id="SA1120" Action="None" />
+	<Rule Id="SA1101" Action="None" />
+        <Rule Id="SA1117" Action="None" />
+	<Rule Id="SA1120" Action="None" />
         <Rule Id="SA1200" Action="None" />
+	<Rule Id="SA1202" Action="None" />
+	<Rule Id="SA1204" Action="None" />
         <Rule Id="SA1300" Action="None" />
         <Rule Id="SA1512" Action="None" />
         <Rule Id="SA1515" Action="None" />

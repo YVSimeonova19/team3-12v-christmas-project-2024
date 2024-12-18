@@ -1,14 +1,28 @@
-﻿namespace CristmassTree.Services.Validator;
-
-using CristmassTree.Data.Models;
+﻿using CristmassTree.Data.Models;
 using CristmassTree.Services.Contracts;
 
-public class LightValidator : ILightValidator
+namespace CristmassTree.Services.Validator
 {
-    public async Task<bool> ValidateLightAsync(Light light)
+    public abstract class LightValidator : ILightValidator
     {
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync($"https://polygon.gsk567.com/?x={light.X}&y={light.Y}");
-        return response.IsSuccessStatusCode;
+        protected ILightValidator? NextValidator { get; private set; }
+
+        public ILightValidator SetNext(ILightValidator validator)
+        {
+            this.NextValidator = validator;
+            return validator;
+        }
+
+        public abstract Task<bool> ValidateLightAsync(Light light);
+
+        protected async Task<bool> ValidateNext(Light light)
+        {
+            if (this.NextValidator == null)
+            {
+                return true;
+            }
+
+            return await this.NextValidator.ValidateLightAsync(light);
+        }
     }
 }

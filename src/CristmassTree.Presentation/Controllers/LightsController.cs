@@ -2,6 +2,7 @@ using System.Diagnostics;
 using CristmassTree.Data.Models;
 using CristmassTree.Presentation.Models;
 using CristmassTree.Services;
+using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +14,26 @@ namespace CristmassTree.Presentation.Controllers
     [ApiController]
     public class LightsController : ControllerBase
     {
-        private LightFactory lightFactory;
-        private LightValidator validator;
-        private ILogger logger;
+        private readonly LightFactory lightFactory;
+        private readonly ILightValidator validator;
+        private readonly ILogger<LightsController> logger;
 
         public LightsController(
             LightFactory lightFactory,
-            LightValidator validator,
+            ILightValidator validationChain, // Change this line
             ILogger<LightsController> logger)
         {
             this.lightFactory = lightFactory;
-            this.validator = validator;
+            this.validator = validationChain;
             this.logger = logger;
         }
 
         // GET
         [HttpGet]
-        public string Get()
+        public async Task<string> Get()
         {
-            return JsonSerializer.Serialize(string.Empty);
+            var light = await this.lightFactory.CreateLight("Test Light", "Bi8P6uenVgX8bj6R1VBe0qNG1ukbbDtWHPA3G5L1ciHfK14rgePL6M3EFGYRxi9O");
+            return JsonSerializer.Serialize(light);
         }
 
         // POST

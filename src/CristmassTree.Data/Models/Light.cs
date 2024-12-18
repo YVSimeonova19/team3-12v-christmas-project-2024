@@ -7,13 +7,13 @@ public class Light
 {
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int? Id { get; set; }
+    public int? Id { get; set; } = 1;
 
     [Required]
-    public double? X { get; set; }
+    public double X { get; set; }
 
     [Required]
-    public double? Y { get; set; }
+    public double Y { get; set; }
 
     [Required]
     [Range(3f, 6f)]

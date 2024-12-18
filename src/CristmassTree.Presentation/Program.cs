@@ -3,6 +3,7 @@ using CristmassTree.Data.Data;
 using CristmassTree.Presentation;
 using CristmassTree.Presentation.Controllers;
 using CristmassTree.Services;
+using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Validator;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,15 +25,31 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins(
-                "https://codingburgas.karagogov.com")
+                    "https://codingburgas.karagogov.com")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
 
+// Modify the dependency injection setup
 builder.Services.AddControllers();
-builder.Services.AddSingleton<LightFactory>();
-builder.Services.AddSingleton<LightValidator>();
+builder.Services.AddScoped<LightFactory>();
+
+// Configure the validation chain
+builder.Services.AddScoped<ILightValidator>(sp =>
+{
+    var validationChain = new TrianglePositionValidator();
+    validationChain.SetNext(new ColorValidator())
+        .SetNext(new EffectValidator())
+        .SetNext(new ExternalApiValidator());
+    return validationChain;
+});
+
+// Optional: If you want to register individual validators for potential future use
+builder.Services.AddScoped<TrianglePositionValidator>();
+builder.Services.AddScoped<ColorValidator>();
+builder.Services.AddScoped<EffectValidator>();
+builder.Services.AddScoped<ExternalApiValidator>();
 
 var app = builder.Build();
 
