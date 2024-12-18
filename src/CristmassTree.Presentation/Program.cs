@@ -1,9 +1,5 @@
-using CristmassTree.Data;
 using CristmassTree.Data.Data;
-using CristmassTree.Presentation;
-using CristmassTree.Presentation.Controllers;
 using CristmassTree.Presentation.Middleware;
-using CristmassTree.Services;
 using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Factory;
 using CristmassTree.Services.Services;
@@ -58,6 +54,13 @@ builder.Services.AddScoped<ILightValidator>(sp =>
 builder.Services.AddScoped<TrianglePositionValidator>();
 
 var app = builder.Build();
+
+// header bypass for scripts? (last resort solution)
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("Content-Security-Policy", "script-src 'self' ");
+    await next();
+});
 
 if (app.Environment.IsDevelopment())
 {
