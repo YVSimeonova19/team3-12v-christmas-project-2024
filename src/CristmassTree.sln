@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Data", "Crist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Services", "CristmassTree.Services\CristmassTree.Services.csproj", "{97048300-2DFB-4996-870E-2591BA5E9C51}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution files", "solution files", "{0DE1D8BB-622A-4355-A4C9-4E8D9346622C}"
+	ProjectSection(SolutionItems) = preProject
+		ChristmasTree.ruleset = ChristmasTree.ruleset
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
