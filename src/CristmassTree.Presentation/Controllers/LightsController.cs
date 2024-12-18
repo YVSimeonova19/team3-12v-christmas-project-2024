@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using System.Net;
+using System.Text.Encodings.Web;
+using System.Web;
 using CristmassTree.Data.Models;
 using CristmassTree.Presentation.Models;
 using CristmassTree.Services;
@@ -50,6 +53,7 @@ namespace CristmassTree.Presentation.Controllers
 
             if (model.desc != null)
             {
+                model.desc = HttpUtility.HtmlEncode(model.desc);
                 var light = await this.lightFactory.CreateLight(model.desc, ct!);
                 if (await this.validator.ValidateLightAsync(light))
                 {
