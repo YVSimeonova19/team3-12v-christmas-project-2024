@@ -2,6 +2,7 @@ using CristmassTree.Data;
 using CristmassTree.Presentation;
 using CristmassTree.Presentation.Controllers;
 using CristmassTree.Services;
+using CristmassTree.Services.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<LightFactory>();
+builder.Services.AddSingleton<LightValidator>();
 
 builder.Services.AddData(builder.Configuration);
 

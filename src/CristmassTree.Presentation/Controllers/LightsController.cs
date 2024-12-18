@@ -1,6 +1,7 @@
 using CristmassTree.Presentation.Models;
 using CristmassTree.Services;
 using CristmassTree.Services.Models;
+using CristmassTree.Services.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -12,29 +13,47 @@ namespace CristmassTree.Presentation.Controllers
     public class LightsController : ControllerBase
     {
         LightFactory _lightFactory;
-        List<Light> _lights;
+        LightValidator _validator;
+        ILogger _logger;
 
-        public LightsController(LightFactory lightFactory)
+        public LightsController(
+            LightFactory lightFactory, 
+            LightValidator validator,
+            ILogger<LightsController> logger)
         {
             _lightFactory = lightFactory;
-            _lights = new List<Light>();
+            _validator = validator;
+            _logger = logger;
         }
 
-        // GET: api/<LightsController>
+        // GET 
         [HttpGet]
         public string Get()
         {
-            Console.WriteLine(JsonSerializer.Serialize(_lights));
-            return JsonSerializer.Serialize(_lights);
+            return JsonSerializer.Serialize("");
         }
 
 
-        // POST api/<LightsController>
+        // POST 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] LightPostViewModel model)
         {
-            var light = JsonSerializer.Deserialize<LightPostViewModel>(value);
-            _lightFactory.CreateLight(light.desc, light.ct);
+            Console.WriteLine("here");
+            if (!Request.Headers.TryGetValue("Christmas-Token", out var ct))
+            {
+                _logger.LogError("No christmas token provided");
+                return BadRequest();
+            }
+
+            var light = _lightFactory.CreateLight(model.desc, ct);
+            if (await _validator.ValidateLightAsync(light))
+            {
+                //_lights.Add(light);
+                _logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
+                return Ok();
+            }
+            _logger.LogError("Error adding light");
+            return BadRequest();
         }
 
     }
