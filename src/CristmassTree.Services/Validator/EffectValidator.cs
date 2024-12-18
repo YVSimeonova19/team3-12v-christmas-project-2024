@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CristmassTree.Data.Models;
+﻿using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Validator
 {
@@ -9,9 +6,9 @@ namespace CristmassTree.Services.Validator
     {
         private static readonly HashSet<string> ValidEffects = new(StringComparer.OrdinalIgnoreCase)
         {
-            "g1",
-            "g2",
-            "g3",
+            new string(Effect.G1),
+            new string(Effect.G2),
+            new string(Effect.G3),
         };
 
         public override async Task<bool> ValidateLightAsync(Light light)

@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using CristmassTree.Data.Models;
+﻿using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Validator
 {

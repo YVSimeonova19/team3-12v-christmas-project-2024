@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CristmassTree.Data.Models;
+﻿using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Validator
 {
@@ -9,11 +6,11 @@ namespace CristmassTree.Services.Validator
     {
         private static readonly HashSet<string> ValidColors = new(StringComparer.OrdinalIgnoreCase)
         {
-            "blue-lt",
-            "blue-dk",
-            "red",
-            "gold-lt",
-            "gold-dk",
+            new string(Color.BlueLt),
+            new string(Color.BlueDk),
+            new string(Color.Red),
+            new string(Color.GoldLt),
+            new string(Color.GoldDk),
         };
 
         public override async Task<bool> ValidateLightAsync(Light light)
