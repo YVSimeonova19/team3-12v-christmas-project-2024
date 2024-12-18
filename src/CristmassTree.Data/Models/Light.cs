@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class Light
-{    
+{
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -20,14 +20,14 @@ public class Light
     public double Radius { get; set; }
 
     [Required]
-    public Color Color { get; set; }
+    public string Color { get; set; }
 
     [Required]
-    public Effect Effect { get; set; }
- 
+    public string Effect { get; set; }
+
     [Required]
     public string Description { get; set;}
-    
+
     [Required]
     public string CT {get; set;}
 }
