@@ -45,34 +45,22 @@ namespace CristmassTree.Presentation.Controllers
                 return this.BadRequest();
             }
 
-            // tried to add regex, but code is evaluated in the description field, thus making it legitimate in any way
-            // regex didn't work for this reason, but ive left the solution also (see Program.cs)
-
-            // if (Regex.IsMatch(model.desc!, @"[`]|<[^>]*>|[]]"))
-            // {
-            //     this.logger.LogError("XSS Detected");
-            //     return this.BadRequest();
-            // }
-
-            if (model.desc != null)
+            if (model.desc == null)
             {
-                // also tried html sanitizer package, but to no avail
-                // var sanitizer = new HtmlSanitizer();
-                // model.desc = sanitizer.Sanitize(model.desc);
-
-                // invisible character bypasses XSS though
-                model.desc = HttpUtility.HtmlEncode("\u200e" + model.desc);
-                var light = await this.lightFactory.CreateLight(model.desc, ct!);
-                if (await this.validator.ValidateLightAsync(light))
-                {
-                    await lightService.AddAsync(light);
-                    this.logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
-                    return this.Ok();
-                }
+                this.logger.LogError("Error adding light: description is null");
+                return this.BadRequest();
             }
 
-            this.logger.LogError("Error adding light");
-            return this.BadRequest();
+            // var sanitizer = new HtmlSanitizer();
+            // model.desc = sanitizer.Sanitize(model.desc);
+
+            // invisible character bypasses JavaScript injection
+            model.desc = HttpUtility.HtmlEncode("\u200e" + model.desc);
+            var light = await this.lightFactory.CreateLight(model.desc, ct!);
+
+            await lightService.AddAsync(light);
+            this.logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
+            return this.Ok();
         }
     }
 }

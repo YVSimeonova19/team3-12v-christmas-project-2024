@@ -6,7 +6,6 @@ namespace CristmassTree.Services.Contracts;
 public interface ILightsService
 {
     Task<IEnumerable<LightDto>> GetAllAsync();
-    Task<LightDto?> GetByIdAsync(int id);
     Task AddAsync(Light entity);
-    Task DeleteAsync(int id);
+    Task DeleteOldAsync(string currentChristmasToken);
 }

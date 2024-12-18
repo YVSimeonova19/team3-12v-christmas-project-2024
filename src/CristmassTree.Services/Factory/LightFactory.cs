@@ -1,6 +1,7 @@
 ﻿using CristmassTree.Data.Models;
 using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Validator;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CristmassTree.Services.Factory
 {
@@ -9,6 +10,7 @@ namespace CristmassTree.Services.Factory
         private static readonly Random Random = new();
         private readonly ILightValidator validationChain;
         private readonly HashSet<string> uniqueLightHashes = new();
+        private readonly IMemoryCache memoryCache;
         private Light? lastLight;
 
         private static readonly List<string> Colors = new()
@@ -27,12 +29,14 @@ namespace CristmassTree.Services.Factory
             "g3",
         };
 
-        public LightFactory(IHttpClientFactory httpClientFactory)
+        public LightFactory(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache)
         {
+            this.memoryCache = memoryCache;
             this.validationChain = new TrianglePositionValidator(httpClientFactory);
             this.validationChain.SetNext(new ColorValidator())
                             .SetNext(new EffectValidator())
                             .SetNext(new ExternalApiValidator());
+            this.lastLight = this.memoryCache.TryGetValue("LastLight", out Light? l) ? l : null;
         }
 
         public async Task<Light> CreateLight(string description, string ct)
@@ -74,6 +78,7 @@ namespace CristmassTree.Services.Factory
             while (!await IsUniqueAsync(light));
 
             lastLight = light;
+            memoryCache.Set("LastLight", light);
             return light;
         }
 

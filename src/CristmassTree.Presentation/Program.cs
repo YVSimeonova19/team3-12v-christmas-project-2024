@@ -39,6 +39,7 @@ builder.Services.AddScoped<ITokenTracker, TokenTrackerService>();
 builder.Services.AddScoped<ColorValidator>();
 builder.Services.AddScoped<EffectValidator>();
 builder.Services.AddScoped<ExternalApiValidator>();
+builder.Services.AddMemoryCache();
 
 // Configure the validation chain
 builder.Services.AddScoped<ILightValidator>(sp =>
