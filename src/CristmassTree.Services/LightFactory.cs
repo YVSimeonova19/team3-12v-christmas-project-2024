@@ -9,7 +9,7 @@ public class LightFactory : ILightFactory
     private static readonly List<string> Colors = new() { "blue-lt", "blue-dk", "red", "gold-lt", "gold-dk" };
     private static readonly List<string> Effects = new() { "g1", "g2", "g3" };
 
-    public Light CreateLight(string description, string christmasToken)
+    public Light CreateLight(string description, string ct)
     {
         var x = Random.NextDouble() * (125.80 - 0.00) + 0.00;
         var y = Random.NextDouble() * (170.30 - 14.90) + 14.90;
@@ -24,8 +24,8 @@ public class LightFactory : ILightFactory
             Radius = radius,
             Color = color,
             Effects = effects,
-            Description = $"Light with x: {x}, y: {y}, radius: {Random.Next(1, 20)}, color: {Colors[Random.Next(Colors.Count)]}",
-            ChristmasToken = "gSfK1vEiRDEA9D5aIUKiN1gcsIyvWt20KVxnnh7szYRmeLop6CR09o6YIMRzlo0C",
+            Description = description,
+            ChristmasToken = ct,
         };
     }
 }
