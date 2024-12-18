@@ -1,6 +1,6 @@
 using CristmassTree.Presentation.Models;
 using CristmassTree.Services;
-using CristmassTree.Services.Models;
+using CristmassTree.Data.Models;
 using CristmassTree.Services.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +45,7 @@ namespace CristmassTree.Presentation.Controllers
                 return BadRequest();
             }
 
-            var light = _lightFactory.CreateLight(model.desc, ct);
+            var light = await _lightFactory.CreateLight(model.desc, ct);
             if (await _validator.ValidateLightAsync(light))
             {
                 //_lights.Add(light);

@@ -1,5 +1,5 @@
 ﻿using CristmassTree.Services.Contracts;
-using CristmassTree.Services.Models;
+using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Validator;
 

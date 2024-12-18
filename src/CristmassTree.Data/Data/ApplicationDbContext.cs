@@ -11,4 +11,8 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Light> Lights { get; set; }
+
+    public DbSet<Light> Effects { get; set; }
+
+    public DbSet<Light> Colors { get; set; }
 }

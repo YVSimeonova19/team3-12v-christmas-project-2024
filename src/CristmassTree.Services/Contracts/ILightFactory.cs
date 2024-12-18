@@ -1,8 +1,8 @@
-﻿using CristmassTree.Services.Models;
+﻿using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Contracts;
 
 public interface ILightFactory
 {
-    Light CreateLight(string description, string ct);
+    Task<Light> CreateLight(string description, string ct);
 }
