@@ -12,20 +12,20 @@ namespace CristmassTree.Services
         private static readonly Random Random = new();
         private readonly LightValidator _lightValidator;
 
-        private static readonly List<Color> Colors = new()
+        private static readonly List<string> Colors = new()
         {
-            new Color { Name = Color.BlueLt },
-            new Color { Name = Color.BlueDk },
-            new Color { Name = Color.Red },
-            new Color { Name = Color.GoldLt },
-            new Color { Name = Color.GoldDk },
+            "blue-lt",
+            "blue-dk",
+            "red",
+            "gold-lt",
+            "gold-dk",
         };
 
-        private static readonly List<Effect> Effects = new()
+        private static readonly List<string> Effects = new()
         {
-            new Effect { Name = Effect.G1 },
-            new Effect { Name = Effect.G2 },
-            new Effect { Name = Effect.G3 },
+            "g1",
+            "g2",
+            "g3",
         };
 
         public LightFactory(LightValidator lightValidator)
