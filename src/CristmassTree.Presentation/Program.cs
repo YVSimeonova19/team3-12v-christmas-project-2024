@@ -4,6 +4,7 @@ using CristmassTree.Presentation;
 using CristmassTree.Presentation.Controllers;
 using CristmassTree.Services;
 using CristmassTree.Services.Contracts;
+using CristmassTree.Services.Services;
 using CristmassTree.Services.Validator;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,7 @@ builder.Services.AddCors(options =>
 // Modify the dependency injection setup
 builder.Services.AddControllers();
 builder.Services.AddScoped<LightFactory>();
+builder.Services.AddScoped<LightService>();
 
 // Configure the validation chain
 builder.Services.AddScoped<ILightValidator>(sp =>
