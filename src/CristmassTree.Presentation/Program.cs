@@ -10,7 +10,6 @@ using CristmassTree.Services.Validator;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -26,14 +25,16 @@ builder.Services.AddCors(options =>
         name: "_corsPolicy",
         policy =>
         {
-            policy.WithOrigins(
-                    "https://codingburgas.karagogov.com")
+            policy.WithOrigins("https://codingburgas.karagogov.com")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
 
-// Modify the dependency injection setup
+// Register HttpClient
+builder.Services.AddHttpClient();
+
+// Register services
 builder.Services.AddControllers();
 builder.Services.AddScoped<LightFactory>();
 builder.Services.AddScoped<LightService>();
@@ -45,10 +46,11 @@ builder.Services.AddScoped<ExternalApiValidator>();
 // Configure the validation chain
 builder.Services.AddScoped<ILightValidator>(sp =>
 {
-    var validationChain = new TrianglePositionValidator();
-    validationChain.SetNext(new ColorValidator())
-        .SetNext(new EffectValidator())
-        .SetNext(new ExternalApiValidator());
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var validationChain = new TrianglePositionValidator(httpClientFactory);
+    validationChain.SetNext(sp.GetRequiredService<ColorValidator>())
+        .SetNext(sp.GetRequiredService<EffectValidator>())
+        .SetNext(sp.GetRequiredService<ExternalApiValidator>());
     return validationChain;
 });
 

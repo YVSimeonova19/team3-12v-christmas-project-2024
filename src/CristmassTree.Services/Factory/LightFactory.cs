@@ -28,9 +28,9 @@ namespace CristmassTree.Services
             "g3",
         };
 
-        public LightFactory()
+        public LightFactory(IHttpClientFactory httpClientFactory)
         {
-            this.validationChain = new TrianglePositionValidator();
+            this.validationChain = new TrianglePositionValidator(httpClientFactory);
             this.validationChain.SetNext(new ColorValidator())
                             .SetNext(new EffectValidator())
                             .SetNext(new ExternalApiValidator());

@@ -1,10 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using CristmassTree.Data.Models;
 
 namespace CristmassTree.Services.Validator
 {
     public class TrianglePositionValidator : LightValidator
     {
+        private readonly HttpClient httpClient;
+
+        public TrianglePositionValidator(IHttpClientFactory httpClientFactory)
+        {
+            this.httpClient = httpClientFactory.CreateClient();
+        }
+
         public override async Task<bool> ValidateLightAsync(Light light)
         {
             bool isInTriangle = IsPointInTriangle(
@@ -18,9 +26,16 @@ namespace CristmassTree.Services.Validator
                 return false;
             }
 
-            return await this.ValidateNext(light);
+            var response = await this.ValidateNext(light);
+            if (!response)
+            {
+                return false;
+            }
+
+            return true; // If all checks pass, return true
         }
 
+        // Function to check if the point is inside the triangle using Barycentric coordinates
         private bool IsPointInTriangle(double px, double py,
             double x1, double y1,
             double x2, double y2,
