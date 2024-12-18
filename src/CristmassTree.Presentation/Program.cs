@@ -1,3 +1,5 @@
+using CristmassTree.Data;
+using CristmassTree.Presentation;
 using CristmassTree.Presentation.Controllers;
 using CristmassTree.Services;
 
@@ -18,7 +20,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddSingleton<LightFactory>();
 
+builder.Services.AddData(builder.Configuration);
+
 var app = builder.Build();
+
+await app.PrepareAsync();
 
 if (app.Environment.IsDevelopment())
 {
