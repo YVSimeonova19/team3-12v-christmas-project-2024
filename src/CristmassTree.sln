@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Presentation", "CristmassTree.Presentation\CristmassTree.Presentation.csproj", "{44FF3190-D72A-4DFA-9608-34D6E7E6C1EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Common", "CristmassTree.Common\CristmassTree.Common.csproj", "{98EB8455-7801-4CAC-BDD2-45495F7A0280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Data", "CristmassTree.Data\CristmassTree.Data.csproj", "{303EE2DD-47C5-4543-A658-518F2AFCE08E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CristmassTree.Services", "CristmassTree.Services\CristmassTree.Services.csproj", "{97048300-2DFB-4996-870E-2591BA5E9C51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44FF3190-D72A-4DFA-9608-34D6E7E6C1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44FF3190-D72A-4DFA-9608-34D6E7E6C1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44FF3190-D72A-4DFA-9608-34D6E7E6C1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44FF3190-D72A-4DFA-9608-34D6E7E6C1EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EB8455-7801-4CAC-BDD2-45495F7A0280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EB8455-7801-4CAC-BDD2-45495F7A0280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EB8455-7801-4CAC-BDD2-45495F7A0280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EB8455-7801-4CAC-BDD2-45495F7A0280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{303EE2DD-47C5-4543-A658-518F2AFCE08E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{303EE2DD-47C5-4543-A658-518F2AFCE08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{303EE2DD-47C5-4543-A658-518F2AFCE08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{303EE2DD-47C5-4543-A658-518F2AFCE08E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97048300-2DFB-4996-870E-2591BA5E9C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97048300-2DFB-4996-870E-2591BA5E9C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97048300-2DFB-4996-870E-2591BA5E9C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97048300-2DFB-4996-870E-2591BA5E9C51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
