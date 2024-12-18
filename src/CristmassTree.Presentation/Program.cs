@@ -2,6 +2,7 @@ using CristmassTree.Data;
 using CristmassTree.Data.Data;
 using CristmassTree.Presentation;
 using CristmassTree.Presentation.Controllers;
+using CristmassTree.Presentation.Middleware;
 using CristmassTree.Services;
 using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Services;
@@ -36,6 +37,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddScoped<LightFactory>();
 builder.Services.AddScoped<LightService>();
+builder.Services.AddScoped<ITokenTracker, TokenTrackerService>();
+builder.Services.AddScoped<ColorValidator>();
+builder.Services.AddScoped<EffectValidator>();
+builder.Services.AddScoped<ExternalApiValidator>();
 
 // Configure the validation chain
 builder.Services.AddScoped<ILightValidator>(sp =>
@@ -47,11 +52,7 @@ builder.Services.AddScoped<ILightValidator>(sp =>
     return validationChain;
 });
 
-// Optional: If you want to register individual validators for potential future use
 builder.Services.AddScoped<TrianglePositionValidator>();
-builder.Services.AddScoped<ColorValidator>();
-builder.Services.AddScoped<EffectValidator>();
-builder.Services.AddScoped<ExternalApiValidator>();
 
 var app = builder.Build();
 
@@ -64,6 +65,8 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseCors("_corsPolicy");
+
+app.UseMiddleware<TokenCaptureMiddleware>();
 
 app.MapControllers();
 

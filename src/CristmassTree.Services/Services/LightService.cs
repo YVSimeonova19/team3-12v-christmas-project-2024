@@ -64,4 +64,11 @@ public class LightService : ILightsService
             await context.SaveChangesAsync();
         }
     }
+
+    public async Task DeleteOldAsync(string currentChristmasToken)
+    {
+        var lightsToDelete = context.Lights.Where(light => light.CT != currentChristmasToken);
+        context.Lights.RemoveRange(lightsToDelete);
+        await context.SaveChangesAsync();
+    }
 }
