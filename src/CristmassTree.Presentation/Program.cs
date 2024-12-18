@@ -5,6 +5,7 @@ using CristmassTree.Presentation.Controllers;
 using CristmassTree.Presentation.Middleware;
 using CristmassTree.Services;
 using CristmassTree.Services.Contracts;
+using CristmassTree.Services.Factory;
 using CristmassTree.Services.Services;
 using CristmassTree.Services.Validator;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ builder.Services.AddHttpClient();
 
 // Register services
 builder.Services.AddControllers();
-builder.Services.AddScoped<LightFactory>();
+builder.Services.AddTransient<LightFactory>();
 builder.Services.AddScoped<LightService>();
 builder.Services.AddScoped<ITokenTracker, TokenTrackerService>();
 builder.Services.AddScoped<ColorValidator>();

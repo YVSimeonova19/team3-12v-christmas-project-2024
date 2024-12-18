@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CristmassTree.Data.Models;
+﻿using CristmassTree.Data.Models;
 using CristmassTree.Services.Contracts;
 using CristmassTree.Services.Validator;
 
-namespace CristmassTree.Services
+namespace CristmassTree.Services.Factory
 {
     public class LightFactory : ILightFactory
     {
         private static readonly Random Random = new();
         private readonly ILightValidator validationChain;
+        private readonly HashSet<string> uniqueLightHashes = new();
+        private Light? lastLight;
 
         private static readonly List<string> Colors = new()
         {
@@ -38,30 +37,64 @@ namespace CristmassTree.Services
 
         public async Task<Light> CreateLight(string description, string ct)
         {
-            double x = (Random.NextDouble() * (125.80 - 0.00)) + 0.00;
-            double y = (Random.NextDouble() * (170.30 - 14.90)) + 14.90;
-            double radius = 3 + (Random.NextDouble() * (6 - 3));
+            Light light;
 
-            var color = Colors[Random.Next(Colors.Count)];
-            var effect = Effects[Random.Next(Effects.Count)];
-
-            var light = new Light
+            do
             {
-                X = x,
-                Y = y,
-                Radius = radius,
-                Color = color,
-                Effect = effect,
-                Description = description,
-                CT = ct,
-            };
+                double x = (Random.NextDouble() * (125.80 - 0.00)) + 0.00;
+                double y = (Random.NextDouble() * (170.30 - 14.90)) + 14.90;
+                double radius = 3 + (Random.NextDouble() * (6 - 3));
 
-            if (await this.validationChain.ValidateLightAsync(light))
+                string color;
+                string effect;
+
+                do
+                {
+                    color = Colors[Random.Next(Colors.Count)];
+                    effect = Effects[Random.Next(Effects.Count)];
+                    if (lastLight == null)
+                    {
+                        Console.WriteLine("First | Last Light was null");
+                        break;
+                    }
+                }
+                while (color == lastLight.Color || effect == lastLight.Effect);
+
+                light = new Light
+                {
+                    X = Math.Round(x, 2),
+                    Y = Math.Round(y, 2),
+                    Radius = Math.Round(radius, 2),
+                    Color = color,
+                    Effect = effect,
+                    Description = description,
+                    CT = ct,
+                };
+            }
+            while (!await IsUniqueAsync(light));
+
+            lastLight = light;
+            return light;
+        }
+
+        private async Task<bool> IsUniqueAsync(Light light)
+        {
+            string lightHash = $"{light.Color}-{light.Effect}";
+
+            if (uniqueLightHashes.Contains(lightHash))
             {
-                return light;
+                Console.WriteLine($"Hash is false: " + lightHash);
+                return false;
             }
 
-            return await this.CreateLight(description, ct);
+            if (await validationChain.ValidateLightAsync(light))
+            {
+                Console.WriteLine($"Hash is true: " + lightHash);
+                uniqueLightHashes.Add(lightHash);
+                return true;
+            }
+
+            return false;
         }
     }
 }
