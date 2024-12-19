@@ -9,7 +9,6 @@ namespace CristmassTree.Services.Factory
     {
         private static readonly Random Random = new();
         private readonly ILightValidator validationChain;
-        private readonly HashSet<string> uniqueLightHashes = new();
         private readonly IMemoryCache memoryCache;
         private Light? lastLight;
 
@@ -74,32 +73,16 @@ namespace CristmassTree.Services.Factory
                     Description = description,
                     CT = ct,
                 };
+                if (await validationChain.ValidateLightAsync(light))
+                {
+                    break;
+                }
             }
-            while (!await IsUniqueAsync(light));
+            while (true);
 
             lastLight = light;
             memoryCache.Set("LastLight", light);
             return light;
-        }
-
-        private async Task<bool> IsUniqueAsync(Light light)
-        {
-            string lightHash = $"{light.Color}-{light.Effect}";
-
-            if (uniqueLightHashes.Contains(lightHash))
-            {
-                Console.WriteLine($"Hash is false: " + lightHash);
-                return false;
-            }
-
-            if (await validationChain.ValidateLightAsync(light))
-            {
-                Console.WriteLine($"Hash is true: " + lightHash);
-                uniqueLightHashes.Add(lightHash);
-                return true;
-            }
-
-            return false;
         }
     }
 }
