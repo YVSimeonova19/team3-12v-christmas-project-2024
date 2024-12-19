@@ -1,25 +1,29 @@
 using CristmassTree.Services.Contracts;
 
-namespace CristmassTree.Services.Services;
-
-public class TokenTrackerService : ITokenTracker
+namespace CristmassTree.Services.Services
 {
-    private readonly LightService lightService;
-    private string lastToken = string.Empty;
-
-    public TokenTrackerService(LightService lightService)
+    public class TokenTrackerService : ITokenTracker
     {
-        this.lightService = lightService;
-    }
+        private readonly LightService lightService;
+        private readonly ICurrentToken currentToken;
 
-    public async Task TrackTokenAsync(string token)
-    {
-        if (lastToken != token)
+        public TokenTrackerService(LightService lightService, ICurrentToken currentToken)
         {
-            await lightService.DeleteOldAsync(token);
-            lastToken = token;
+            this.lightService = lightService;
+            this.currentToken = currentToken;
         }
 
-        await Task.CompletedTask;
+        public async Task TrackTokenAsync(string token)
+        {
+            var lastToken = currentToken.GetToken();
+
+            if (lastToken != token)
+            {
+                await lightService.DeleteOldAsync(token);
+                currentToken.SetToken(token);
+            }
+
+            await Task.CompletedTask;
+        }
     }
 }

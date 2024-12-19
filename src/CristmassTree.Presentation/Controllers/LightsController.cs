@@ -10,23 +10,19 @@ namespace CristmassTree.Presentation.Controllers
 {
     [Route("/")]
     [ApiController]
-    public class LightsController : ControllerBase
+    public class LightsController(
+        LightFactory lightFactory,
+        ILightValidator validationChain,
+        ILogger<LightsController> logger,
+        LightService lightService,
+        ICurrentToken currentToken)
+        : ControllerBase
     {
-        private readonly LightFactory lightFactory;
-        private readonly ILightValidator validator;
-        private readonly ILogger<LightsController> logger;
-        private readonly LightService lightService;
-
-        public LightsController(
-            LightFactory lightFactory,
-            ILightValidator validationChain, // Change this line
-            ILogger<LightsController> logger, LightService lightService)
-        {
-            this.lightFactory = lightFactory;
-            this.validator = validationChain;
-            this.logger = logger;
-            this.lightService = lightService;
-        }
+        private readonly LightFactory lightFactory = lightFactory;
+        private readonly ILightValidator validator = validationChain;
+        private readonly ILogger<LightsController> logger = logger;
+        private readonly LightService lightService = lightService;
+        private readonly ICurrentToken currentToken = currentToken;
 
         // GET
         [HttpGet]
@@ -39,7 +35,8 @@ namespace CristmassTree.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] LightPostViewModel model)
         {
-            if (!this.Request.Headers.TryGetValue("Christmas-Token", out var ct))
+            // if (!this.Request.Headers.TryGetValue("Christmas-Token", out var ct))
+            if (currentToken.GetToken() == string.Empty)
             {
                 this.logger.LogError("No christmas token provided");
                 return this.BadRequest();
@@ -56,7 +53,7 @@ namespace CristmassTree.Presentation.Controllers
 
             // invisible character bypasses JavaScript injection
             model.desc = HttpUtility.HtmlEncode("\u200e" + model.desc);
-            var light = await this.lightFactory.CreateLight(model.desc, ct!);
+            var light = await this.lightFactory.CreateLight(model.desc, currentToken.GetToken());
 
             await lightService.AddAsync(light);
             this.logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");

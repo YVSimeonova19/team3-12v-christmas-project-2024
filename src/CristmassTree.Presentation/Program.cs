@@ -34,8 +34,9 @@ builder.Services.AddHttpClient();
 // Register services
 builder.Services.AddControllers();
 builder.Services.AddTransient<LightFactory>();
-builder.Services.AddScoped<LightService>();
+builder.Services.AddSingleton<ICurrentToken, CurrentToken>();
 builder.Services.AddScoped<ITokenTracker, TokenTrackerService>();
+builder.Services.AddScoped<LightService>();
 builder.Services.AddScoped<ColorValidator>();
 builder.Services.AddScoped<EffectValidator>();
 builder.Services.AddScoped<ExternalApiValidator>();
