@@ -12,14 +12,12 @@ namespace CristmassTree.Presentation.Controllers
     [ApiController]
     public class LightsController(
         LightFactory lightFactory,
-        ILightValidator validationChain,
         ILogger<LightsController> logger,
         LightService lightService,
         ICurrentToken currentToken)
         : ControllerBase
     {
         private readonly LightFactory lightFactory = lightFactory;
-        private readonly ILightValidator validator = validationChain;
         private readonly ILogger<LightsController> logger = logger;
         private readonly LightService lightService = lightService;
         private readonly ICurrentToken currentToken = currentToken;
@@ -35,17 +33,16 @@ namespace CristmassTree.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] LightPostViewModel model)
         {
-            // if (!this.Request.Headers.TryGetValue("Christmas-Token", out var ct))
             if (currentToken.GetToken() == string.Empty)
             {
                 this.logger.LogError("No christmas token provided");
-                return this.BadRequest();
+                return this.BadRequest(new { succeeded = false });
             }
 
             if (model.desc == null)
             {
                 this.logger.LogError("Error adding light: description is null");
-                return this.BadRequest();
+                return this.BadRequest(new { succeeded = false });
             }
 
             // var sanitizer = new HtmlSanitizer();
@@ -57,7 +54,7 @@ namespace CristmassTree.Presentation.Controllers
 
             await lightService.AddAsync(light);
             this.logger.LogInformation($"Created light: {JsonSerializer.Serialize(light)}");
-            return this.Ok();
+            return this.Ok(new { succeeded = true });
         }
     }
 }
